@@ -25,6 +25,32 @@ app.get('/todos', (req, res) => {
     } )
 });
 
+app.post('/todos', (req, res) => {
+    let receivedTodo = req.body;
+    let newTodo = {
+        id: uuidv4(),
+        title: receivedTodo.title,
+        status: receivedTodo.status,
+        description: receivedTodo.description,
+    }
+    fs.readFile('todos.txt', 'utf8', (err, data) => {
+        if(err) {
+         throw new Error("Error occured while reading file");
+        } else {
+            const todos = JSON.parse(data);
+            todos.push(newTodo);
+            fs.writeFile("todos.txt", JSON.stringify(todos), (err) => {
+                if(err) {
+                    throw new Error("Error occured while writing into the file")
+                } else {
+                    res.status(201).json(newTodo);
+                }
+            })
+
+        }
+     } )
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
