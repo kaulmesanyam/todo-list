@@ -7,8 +7,13 @@
 </head>
 <body>
     <input type="text" name="Title" placeholder="Enter title here" id="title">
+    <br><br>
     <input type="text" name="Description" placeholder="Enter descrition here" id="description">
+    <br><br>
     <button type="submit" onclick="sendTodo()">Submit</button>
+    <br><br>
+    <div id="todoListArea">
+    </div>
 
     <script>
         getTodos();
@@ -53,9 +58,34 @@
                     return res.json();
                 }
             }).then((data) => {
-                console.log(data);
+                let todosDisplay = document.getElementById('todoListArea');
+                todosDisplay.innerHTML = '';
+                for(let i = 0; i < data.length; i++) {
+                    
+                    var todoCard = document.createElement('div');
+                    var todoTitle = document.createElement('span');
+                    var todoDesc = document.createElement('span');
+                    var todoStatus = document.createElement('span');
+                    var todoDelete = document.createElement('button');
+
+                    todoTitle.innerHTML = data[i].title;
+                    todoDesc.innerHTML = data[i].description;
+                    todoStatus.innerHTML = data[i].status;
+                    todoDelete.innerHTML = 'Delete';
+                    todoDelete.setAttribute("onClick", `deleteTodo(${data[i].id})`);
+
+                    todoCard.append(todoTitle);
+                    todoCard.append(todoDesc);
+                    todoCard.append(todoStatus);
+                    todoCard.append(todoDelete);
+
+                    todosDisplay.append(todoCard);
+
+                }                
             })
         }
+
+        
     </script>
 </body>
 </html>
