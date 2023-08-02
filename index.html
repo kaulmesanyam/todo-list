@@ -11,6 +11,7 @@
     <button type="submit" onclick="sendTodo()">Submit</button>
 
     <script>
+        getTodos();
         function sendTodo() {
             let title = document.getElementById('title').value;
             let desc = document.getElementById('description').value;
@@ -35,6 +36,19 @@
                     throw new Error("Error occured while processing POST request to server");
                 }else {
                     return response.json();
+                }
+            }).then((data) => {
+                console.log(data);
+                getTodos();
+            })
+        }
+
+        function getTodos() {
+            fetch('http://127.0.0.1:3000/todos').then((res) => {
+                if(!res.ok) {
+                    throw new Error("Error occured while processing GET request to fetch todos from backend");
+                } else {
+                    return res.json();
                 }
             }).then((data) => {
                 console.log(data);
