@@ -27,7 +27,6 @@
                 status: false
             }
 
-            console.log(todo);
 
             fetch('http://127.0.0.1:3000/todos', {
                 method: 'POST',
@@ -43,7 +42,6 @@
                     return response.json();
                 }
             }).then((data) => {
-                console.log(data);
                 getTodos();
             })
         }
@@ -72,7 +70,8 @@
                     todoDesc.innerHTML = data[i].description;
                     todoStatus.innerHTML = data[i].status;
                     todoDelete.innerHTML = 'Delete';
-                    todoDelete.setAttribute("onClick", `deleteTodo(${data[i].id})`);
+                    let id = data[i].id;
+                    todoDelete.setAttribute("onClick", 'deleteTodo(' + id + ')');
 
                     todoCard.append(todoTitle);
                     todoCard.append(todoDesc);
@@ -85,7 +84,19 @@
             })
         }
 
-        
+        function deleteTodo(id) {
+            fetch('http://127.0.0.1:3000/todo/' + id, {
+                method: "DELETE"
+            }).then((res) => {
+                if(!res.ok) {
+                    throw new Error("Error occured while processing DELETE request");
+                } else {
+                    return res.json();
+                }
+            }).then((data) => {
+                getTodos();
+            })
+        }
     </script>
 </body>
 </html>

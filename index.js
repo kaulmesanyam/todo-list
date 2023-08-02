@@ -28,7 +28,7 @@ app.get('/todos', (req, res) => {
 app.post('/todos', (req, res) => {
     let receivedTodo = req.body;
     let newTodo = {
-        id: uuidv4(),
+        id: Math.floor(Math.random() * 1000000),
         title: receivedTodo.title,
         status: receivedTodo.status,
         description: receivedTodo.description,
@@ -58,9 +58,8 @@ app.delete('/todo/:id', (req, res) => {
             throw new Error('Error occured while reading file')
         } else {
             let todos = JSON.parse(data);
-
             for(let i = 0; i < todos.length; i++) {
-                if(todos[i].id === id) {
+                if(todos[i].id.toString() === id) {
                     todos.splice(i, 1);
                     break;
                 }
