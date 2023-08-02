@@ -44,7 +44,9 @@
         }
 
         function getTodos() {
-            fetch('http://127.0.0.1:3000/todos').then((res) => {
+            fetch('http://127.0.0.1:3000/todos', {
+                method: "GET"
+            }).then((res) => {
                 if(!res.ok) {
                     throw new Error("Error occured while processing GET request to fetch todos from backend");
                 } else {
